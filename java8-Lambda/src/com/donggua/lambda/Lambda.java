@@ -15,7 +15,7 @@ import java.util.TreeSet;
 public class Lambda {
 
     @Test
-    public void test(){
+    public void test() {
         // 使用匿名内部类作为参数传递
         Comparator<String> comparator = new Comparator<String>() {
             @Override
@@ -36,14 +36,14 @@ public class Lambda {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         // 使用Lambda 表达式作为参数传递
         Comparator<String> comparator = (x, y) -> Integer.compare(x.length(), y.length());
         TreeSet<String> treeSet = new TreeSet<>(comparator);
     }
 
     @Test
-    public void test3(){
+    public void test3() {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -57,4 +57,6 @@ public class Lambda {
         Runnable runnable2 = () -> System.out.println("hello word lambda");
         runnable2.run();
     }
+
+
 }
