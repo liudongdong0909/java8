@@ -20,6 +20,15 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(String name) {
+        this.name = name;
+    }
+
+    public Employee(int id, int age) {
+        this.id = id;
+        this.age = age;
+    }
+
     public Employee(int id, String name, int age, double salary) {
         this.id = id;
         this.name = name;
@@ -74,6 +83,11 @@ public class Employee {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public enum Status {
+        FREE, BUSY, VOCATION;
+    }
+
 
     public void show(){
         System.out.println("测试方法引用！！！");
