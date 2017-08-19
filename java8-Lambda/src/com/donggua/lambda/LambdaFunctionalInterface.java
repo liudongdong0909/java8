@@ -150,7 +150,6 @@ public class LambdaFunctionalInterface {
     public void test9() {
         emps.stream()
                 .filter(t -> t.getSalary() >= 4000)
-                .limit(2)
                 .forEach(System.out::println);
 
         System.out.println("----------------------");

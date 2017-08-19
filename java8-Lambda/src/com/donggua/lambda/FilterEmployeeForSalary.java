@@ -9,7 +9,6 @@ import com.donggua.employee.Employee;
  */
 public class FilterEmployeeForSalary implements MyPredicate<Employee> {
 
-
     @Override
     public boolean apply(Employee employee) {
         return employee.getSalary() >= 4000;
