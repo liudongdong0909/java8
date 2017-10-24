@@ -406,4 +406,5 @@ public class LambdaStramAPI {
                 .collect(Collectors.partitioningBy((e) -> e.getSalary() > 4000));
         System.out.println(partition);
     }
+
 }
