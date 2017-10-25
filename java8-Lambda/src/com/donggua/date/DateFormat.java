@@ -76,9 +76,9 @@ public class DateFormat {
         // 2） CachedThreadPool 和 ScheduledThreadPool:
         // 允许的创建线程数量为 Integer.MAX_VALUE， 可能会创建大量的线程，从而导致 OOM。
         //
-        /*ThreadPoolExecutor pool = new ThreadPoolExecutor(50,50,20,TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>(1024),
-                new ThreadPoolExecutor.DiscardOldestPolicy());*/
-        ExecutorService pool = Executors.newFixedThreadPool(50);
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(50,50,20,TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>(1024),
+                new ThreadPoolExecutor.DiscardOldestPolicy());
+        //ExecutorService pool = Executors.newFixedThreadPool(50);
 
         List<Future<LocalDate>> results = new ArrayList<>();
 
