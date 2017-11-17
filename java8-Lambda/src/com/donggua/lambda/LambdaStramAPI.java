@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -146,7 +147,12 @@ public class LambdaStramAPI {
         emps.stream()
                 .map(Employee::getAge)
                 .forEach(System.out::println);
+
+        System.out.println("-------------");
+        Stream<List<Integer>> intStream = Stream.of(Arrays.asList(1, 2, 3), Arrays.asList(4, 5), Arrays.asList(5, 6));
+        intStream.flatMap(childList -> childList.stream()).forEach(System.out::print);
     }
+
 
     @Test
     public void test8() {
@@ -304,7 +310,7 @@ public class LambdaStramAPI {
     //collect(Collector c) : 将流转换为其他形式。
     //接收一个 Collector接口的实现，用于给Stream中元素做汇总的方法
     @Test
-    public void test16(){
+    public void test16() {
         List<String> collect = emps.stream()
                 .map(Employee::getName)
                 .collect(Collectors.toList());
@@ -327,7 +333,7 @@ public class LambdaStramAPI {
 
     // 收集统计
     @Test
-    public  void test17(){
+    public void test17() {
         // 统计总个数
         Long count = emps.stream()
                 .collect(Collectors.counting());
@@ -381,7 +387,7 @@ public class LambdaStramAPI {
 
     // 分组
     @Test
-    public  void test18(){
+    public void test18() {
         Map<String, List<Employee>> group = emps.stream()
                 .collect(Collectors.groupingBy(Employee::getName));
         System.out.println(group);
@@ -389,7 +395,7 @@ public class LambdaStramAPI {
 
     // 多级分组
     @Test
-    public void test19(){
+    public void test19() {
         Map<String, Map<String, List<Employee>>> group = emps.stream()
                 .collect(Collectors.groupingBy(Employee::getName, Collectors.groupingBy((e) -> {
                     if (e.getAge() < 30) return "青年";
@@ -401,10 +407,25 @@ public class LambdaStramAPI {
 
     //分区
     @Test
-    public void test20(){
+    public void test20() {
         Map<Boolean, List<Employee>> partition = emps.stream()
                 .collect(Collectors.partitioningBy((e) -> e.getSalary() > 4000));
         System.out.println(partition);
     }
 
+    // peek
+    // 生成一个包含原Stream所有元素的新Stream，同时提供一个消费函数（Consume），当Stream中每个元素被消费时都会执行给定的消费函数。
+    // 举个例子来说，对1到9求和，求和前打印所有求和元素。因为Stream是单向的，做了求和就不能再打印了，怎么办呢？用peek方法。
+    @Test
+    public void test21(){
+        int sum = IntStream.range(1, 10).peek(System.out::println).sum();
+        System.out.println("sum:" + sum);
+    }
+
+    // 获取userId的Map
+    @Test
+    public void test22(){
+        Map<Integer, Employee> userIdMap = emps.stream().collect(Collectors.toMap(u -> u.getId(), u -> u));
+        //userIdMap.entrySet().parallelStream().forEach();
+    }
 }
