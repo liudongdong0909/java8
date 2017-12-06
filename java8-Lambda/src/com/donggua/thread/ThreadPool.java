@@ -29,13 +29,22 @@ public class ThreadPool {
     @Test
     public void test1() {
         // 对于超出的线程会在LinkedBlockingQueue队列中等待
-        /*ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 10,
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0, 10,
                 60L, TimeUnit.SECONDS,
-                new LinkedBlockingDeque<>(), Executors.defaultThreadFactory());*/
-        ExecutorService executorService = Executors.newCachedThreadPool();
-        for (int i = 0; i < 20; i++) {
+                new LinkedBlockingQueue<>(), new ThreadFactory() {
+            private final AtomicInteger poolNumber = new AtomicInteger(1);
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+            @Override
+            public Thread newThread(Runnable r) {
+
+                return new Thread(r,"cacheThreadPool-" + poolNumber.getAndIncrement() + "-thread-" + threadNumber.getAndIncrement());
+            }
+        });
+      //  ExecutorService threadPoolExecutor = Executors.newCachedThreadPool();
+        for (int i = 0; i < 200; i++) {
             final int index = i;
-            executorService.execute(() -> System.out.println(Thread.currentThread().getName() + "====>>>>>" + index));
+            threadPoolExecutor.execute(() -> System.out.println(Thread.currentThread().getName() + "====>>>>>" + index));
             try {
                 Thread.sleep(100);
             } catch (Exception e) {
@@ -43,7 +52,7 @@ public class ThreadPool {
             }
 
         }
-        executorService.shutdown();
+        threadPoolExecutor.shutdown();
 
         System.out.println(">>>>>>>>==========================<<<<<<<<");
     }
@@ -158,8 +167,13 @@ public class ThreadPool {
     public void test5() {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1,
                 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(), new CustomerThreadFactory("singleThreadPool"));
-       // ExecutorService executorService = Executors.newSingleThreadExecutor();
+                new LinkedBlockingQueue<Runnable>(), new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "singleThreadPool-" + new AtomicInteger(1).getAndIncrement() + "-thread-");
+            }
+        });
+        // ExecutorService executorService = Executors.newSingleThreadExecutor();
         for (int i = 0; i < 20; i++) {
             final int index = 1;
             threadPoolExecutor.execute(new Runnable() {
