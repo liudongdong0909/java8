@@ -132,8 +132,8 @@ public class ThreadPool {
             }
         };
 
-       ScheduledThreadPoolExecutor scheduledThreadPool = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), threadFactory);
-        //ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(0;
+        ScheduledThreadPoolExecutor scheduledThreadPool = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), threadFactory);
+        // ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(0);
         for (int i = 0; i < 20; i++) {
             // 定时执行一次的任务， 延迟1s后执行
             /**
