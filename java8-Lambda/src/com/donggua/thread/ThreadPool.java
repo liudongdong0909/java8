@@ -38,10 +38,10 @@ public class ThreadPool {
             @Override
             public Thread newThread(Runnable r) {
 
-                return new Thread(r,"cacheThreadPool-" + poolNumber.getAndIncrement() + "-thread-" + threadNumber.getAndIncrement());
+                return new Thread(r, "cacheThreadPool-" + poolNumber.getAndIncrement() + "-thread-" + threadNumber.getAndIncrement());
             }
         });
-      //  ExecutorService threadPoolExecutor = Executors.newCachedThreadPool();
+        //  ExecutorService threadPoolExecutor = Executors.newCachedThreadPool();
         for (int i = 0; i < 200; i++) {
             final int index = i;
             threadPoolExecutor.execute(() -> System.out.println(Thread.currentThread().getName() + "====>>>>>" + index));
@@ -92,10 +92,20 @@ public class ThreadPool {
      */
     @Test
     public void test3() {
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ThreadFactory threadFactory = new ThreadFactory() {
+            private final AtomicInteger poolNumber = new AtomicInteger(1);
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "cacheThreadPool-" + poolNumber.getAndIncrement() + "-thread-" + threadNumber.getAndIncrement());
+            }
+        };
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), 10, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), threadFactory);
+        //ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < 20; i++) {
             final int index = i;
-            executorService.execute(() -> System.out.println(Thread.currentThread().getName() + "====>>>>" + index));
+            threadPoolExecutor.execute(() -> System.out.println(Thread.currentThread().getName() + "====>>>>" + index));
 
             try {
                 Thread.sleep(100);
@@ -103,7 +113,7 @@ public class ThreadPool {
                 e.printStackTrace();
             }
         }
-        executorService.shutdown();
+        threadPoolExecutor.shutdown();
     }
 
     /**
@@ -112,7 +122,18 @@ public class ThreadPool {
      */
     @Test
     public void test4() {
-        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(1);
+        ThreadFactory threadFactory = new ThreadFactory() {
+            private final AtomicInteger poolNumber = new AtomicInteger(1);
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "scheduledThreadPool-" + poolNumber.getAndIncrement() + "-thread-" + threadNumber.getAndIncrement());
+            }
+        };
+
+       ScheduledThreadPoolExecutor scheduledThreadPool = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), threadFactory);
+        //ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(0;
         for (int i = 0; i < 20; i++) {
             // 定时执行一次的任务， 延迟1s后执行
             /**
