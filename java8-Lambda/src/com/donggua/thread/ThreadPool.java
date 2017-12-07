@@ -29,7 +29,7 @@ public class ThreadPool {
     @Test
     public void test1() {
         // 对于超出的线程会在LinkedBlockingQueue队列中等待
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0, 10,
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 10,
                 60L, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(), new ThreadFactory() {
             private final AtomicInteger poolNumber = new AtomicInteger(1);
