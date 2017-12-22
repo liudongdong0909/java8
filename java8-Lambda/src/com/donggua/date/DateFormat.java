@@ -27,6 +27,11 @@ public class DateFormat {
         List<Future<Date>> results = new ArrayList<>();
 
         for (int i = 0; i < 50; i++) {
+            /**
+             *  将执行结果保存到list中，后面再去可以避免阻塞。
+             *  原因：future.get()方法获取结果时，这个方法是阻塞的，一直要等到线程任务返回结果
+             *  所以：如果在不要求立马拿到执行结果的情况下，可以先将执行结果放在队列里面，待程序执行完毕之后在获取每个线程的执行结果
+             */
             results.add(pool.submit(task));
         }
 
@@ -76,7 +81,7 @@ public class DateFormat {
         // 2） CachedThreadPool 和 ScheduledThreadPool:
         // 允许的创建线程数量为 Integer.MAX_VALUE， 可能会创建大量的线程，从而导致 OOM。
         //
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(50,50,20,TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>(1024),
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(50, 50, 20, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>(1024),
                 new ThreadPoolExecutor.DiscardOldestPolicy());
         //ExecutorService pool = Executors.newFixedThreadPool(50);
 
