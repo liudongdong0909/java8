@@ -1,7 +1,7 @@
 package com.donggua.thread;
 
 /**
- * 线程等待换新机制
+ * 线程等待唤醒机制
  */
 public class ThreadDemo3 {
     public static boolean flags = false;
