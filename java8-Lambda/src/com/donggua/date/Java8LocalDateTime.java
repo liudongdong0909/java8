@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Set;
 
@@ -62,7 +63,7 @@ public class Java8LocalDateTime {
      * Instant : 时间戳（按 Unix 元年 1970年1月1日 00:00:00 所经历的毫秒进行计算）
      */
     @Test
-    public void test2(){
+    public void test2() {
         Instant instant = Instant.now();// 默认获取按 UTC 的世界时间
         System.out.println(instant);
 
@@ -95,11 +96,11 @@ public class Java8LocalDateTime {
     }
 
     /*
-	 * Duration : 计算两个“时间”的间隔
-	 * Period : 计算两个“日期”的间隔
+     * Duration : 计算两个“时间”的间隔 millis/seconds/minutes
+	 * Period : 计算两个“日期”的间隔 days/months/years
 	 */
     @Test
-    public  void test3(){
+    public void test3() {
         LocalTime localTime = LocalTime.now();
         LocalTime localTime1 = LocalTime.of(22, 22, 22);
 
@@ -114,7 +115,7 @@ public class Java8LocalDateTime {
     }
 
     @Test
-    public  void test4(){
+    public void test4() {
         LocalDate localDate = LocalDate.now();
         LocalDate localDate1 = LocalDate.of(2017, 8, 29);
 
@@ -127,10 +128,37 @@ public class Java8LocalDateTime {
     }
 
     /**
+     *
+     */
+    @Test
+    public void test9() {
+        //　days/months/years
+        LocalDate dateOfBirth = LocalDate.of(1991, 9, 9);
+        LocalDate currentDate = LocalDate.now();
+        long diffInDays = ChronoUnit.DAYS.between(dateOfBirth, currentDate);
+        long diffInMonths = ChronoUnit.MONTHS.between(dateOfBirth, currentDate);
+        long diffInYears = ChronoUnit.YEARS.between(dateOfBirth, currentDate);
+        System.out.printf("differrence %d days, %d months, %d years", diffInDays, diffInMonths, diffInYears);
+
+        System.out.println("------------------------------");
+        //　millis/seconds/minutes
+        LocalDateTime dateTime = LocalDateTime.of(1991, 9, 10, 14, 0);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        long diffInNano = ChronoUnit.NANOS.between(dateTime, localDateTime);
+        long diffInMillis = ChronoUnit.MILLIS.between(dateTime, localDateTime);
+        long diffInSeconds = ChronoUnit.SECONDS.between(dateTime, localDateTime);
+        long diffInMinutes = ChronoUnit.MINUTES.between(dateTime, localDateTime);
+        long diffInHours = ChronoUnit.HOURS.between(dateTime, localDateTime);
+        System.out.printf("differrence %d hours, %d minutes, %d seconds, %d millis, %d nanos", diffInHours, diffInMinutes, diffInSeconds, diffInMillis, diffInNano);
+
+    }
+
+
+    /**
      * TemporalAdjusters: 时间校正器
      */
     @Test
-    public  void  test5(){
+    public void test5() {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime dateTime = localDateTime.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
         System.out.println(dateTime);
@@ -155,7 +183,7 @@ public class Java8LocalDateTime {
      * DateTimeFormatter : 用于日期时间解析格式化
      */
     @Test
-    public void test6(){
+    public void test6() {
         //DateTimeFormatter isoDateTime = DateTimeFormatter.ISO_DATE_TIME;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss E");
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -169,7 +197,7 @@ public class Java8LocalDateTime {
     }
 
     @Test
-    public  void test7(){
+    public void test7() {
         Set<String> availableZoneIds = ZoneId.getAvailableZoneIds();
         availableZoneIds.forEach(System.out::println);
         System.out.println(availableZoneIds.size());
@@ -179,7 +207,7 @@ public class Java8LocalDateTime {
      * 带时区的时间日期
      */
     @Test
-    public  void test8(){
+    public void test8() {
         LocalDateTime localDateTime = LocalDateTime.now();
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Europe/Monaco"));
         System.out.println(zonedDateTime);
