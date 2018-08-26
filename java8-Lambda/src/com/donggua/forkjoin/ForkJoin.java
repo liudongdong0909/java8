@@ -17,6 +17,11 @@ public class ForkJoin {
 
     private static final long END_VALUE = 10000000000L;
 
+    public static void main(String[] args) {
+        System.out.println(3*3/2);
+        System.out.println((3*3) >> 1);
+    }
+
     // fork join
     @Test
     public void test1(){
