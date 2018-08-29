@@ -14,6 +14,7 @@ public class ThreadCloseGraceful {
         @Override
         public void run() {
             while (true) {
+                System.out.println(Thread.interrupted());
                 if (Thread.interrupted()){
                     System.out.println("已中断");
                     break; // return 就无法执行后面的逻辑

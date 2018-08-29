@@ -45,13 +45,13 @@ public class CompletionServiceTest {
                     futureList.add(future);
                 });
 
-        // Future<Integer> future = null;
-        // while ((future = executorCompletionService.take()) != null){
-        //     System.out.println(future.get());
-        // }
+        Future<Integer> future = null;
+        while ((future = executorCompletionService.take()) != null){
+            System.out.println(future.get());
+        }
 
-        Future<Integer> future = executorCompletionService.poll();
-        System.out.println(future.get());
+        // Future<Integer> future = executorCompletionService.poll();
+        // System.out.println(future.get());
 
         // Future<Integer> future1 = executorCompletionService.poll(30, TimeUnit.SECONDS);
         // System.out.println(future1.get());
